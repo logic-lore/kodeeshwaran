@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>title</title>
+    <script src="res/jquery.min.js"></script>
+    <style>
+        @font-face {
+            font-family: Rubik;
+            src: url(res/font/Rubik-Medium.ttf);
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        body {
+            width: 100%;
+            height: 100vh;
+            margin: 0;
+            background-image: radial-gradient(#23105f, #010d37);
+            font-family: Rubik;
+            color: #d5d7d5;
+            user-select: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+        .top {
+            width: 100%;
+            height: 10vh;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .rating-bg {
+            margin-left: 5vw;
+            display: flex;
+            justify-content: center;
+        }
+
+        .rate-level-bg {
+            width: 13vw;
+            height: 13vw;
+            position: relative;
+        }
+
+        .rate-level-img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .rate-level-txt {
+            font-size: 5vw;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #010d37;
+        }
+
+        .coins {
+            margin-right: 5vw;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: logo-img 400ms ease 1;
+            transition: all 400ms ease;
+        }
+
+        .coins-img {
+            width: 8vw;
+            height: 8vw;
+        }
+
+        #coins {
+            margin-left: 2vw;
+            font-size: 5.5vw;
+        }
+
+        .add-img {
+            width: 7vw;
+            height: 7vw;
+            margin-left: 2vw;
+        }
+
+        .mid {
+            width: 100%;
+            height: 25vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .logo-img {
+            width: 25vh;
+            height: 25vh;
+            animation: logo-img 400ms ease 1;
+            transition: all 400ms ease;
+        }
+
+        @keyframes logo-img {
+            from {
+                transform: scale(1.2);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .content {
+            height: 55vh;
+            display: flex;
+            flex-wrap: wrap;
+            align-content: center;
+        }
+
+        .button-bg {
+            width: 100%;
+            margin-top: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .button-stick {
+            width: 100%;
+            height: .5vh;
+            background-color: #d5d7d5;
+            position: absolute;
+            top: 48%;
+            left: 0;
+            z-index: 0;
+            animation: stick 400ms ease 1;
+            transition: all 300ms ease;
+        }
+
+        @keyframes stick {
+            0% {
+                transform: translate(100%);
+            }
+
+            100% {
+                transform: translate(0%);
+            }
+        }
+
+        .achiev-count {
+            width: 24px;
+            height: 24px;
+            position: absolute;
+            top: 20%;
+            left: 70%;
+            z-index: 10;
+            font-size: 12px;
+            background-color: #225a1e;
+            color: #fff;
+            border-radius: 50%;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 1px 1px 2px black;
+        }
+
+        .button {
+            width: 70%;
+            padding: 2vh 0;
+            background-image: url(res/img/button-bg.png);
+            background-size: 100% 100%;
+            text-align: center;
+            z-index: 1;
+            font-size: 15px;
+            animation: button 400ms ease 1;
+            transition: transform 300ms ease;
+        }
+
+        @keyframes button {
+            0% {
+                transform: translate(-100%);
+            }
+
+            100% {
+                transform: translate(0%);
+            }
+        }
+
+        .button:active {
+            transition: none;
+            transform: scale(.95);
+        }
+
+        .btm {
+            width: 100%;
+            height: 10vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .toast {
+            width: 90vw;
+            position: fixed;
+            top: 70vh;
+            left: 5vw;
+            padding: 1vh 0;
+            background-color: white;
+            border-radius: 10px;
+            color: black;
+            text-align: center;
+            font-size: 4vw;
+            transition: all 400ms ease;
+            display: none;
+            z-index: 11;
+            animation: toast 400ms ease 1;
+        }
+
+        @keyframes toast {
+            0% {
+                transform: scale(1.2);
+                opacity: 0;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <audio src="res/audio/intro.mp3" id="intro-audio"></audio>
+    <audio src="res/audio/lose.mp3" id="lose-audio"></audio>
+    <audio src="res/audio/play.mp3" id="play-audio"></audio>
+    <audio src="res/audio/win.mp3" id="win-audio"></audio>
+    <audio src="res/audio/gameplay.mp3" id="gameplay-audio"></audio>
+    <audio src="res/audio/hint.mp3" id="hint-audio"></audio>
+    <audio src="res/audio/click.mp3" id="click-audio"></audio>
+
+    <div class="top">
+        <div class="rating-bg">
+            <div class="rate-level-bg">
+                <img src="res/img/level.png" class="rate-level-img">
+                <div class="rate-level-txt"></div>
+            </div>
+        </div>
+        <div class="coins">
+            <img src="res/img/coins.png" class="coins-img">
+            <div id="coins">28</div>
+            <img src="res/img/add.png" class="add-img">
+        </div>
+    </div>
+
+    <div class="mid">
+        <img src="res/img/logo.png" class="logo-img">
+    </div>
+
+    <div class="content">
+        <div class="button-bg play-online">
+            <div class="button-stick"></div>
+            <div class="button">PLAY ONLINE</div>
+        </div>
+        <div class="button-bg play">
+            <div class="button-stick"></div>
+            <div class="button">PLAY</div>
+        </div>
+
+        <div class="button-bg ques">
+            <div class="button-stick"></div>
+            <div class="button">QUESTIONS</div>
+        </div>
+
+        <div class="button-bg stats">
+            <div class="button-stick"></div>
+            <div class="button">STATISTICS</div>
+        </div>
+
+        <div class="button-bg achiev">
+            <div class="button-stick"></div>
+            <div class="button">ACHIEVEMENTS<span class="achiev-count">0</span></div>
+        </div>
+
+        <div class="button-bg rate">
+            <div class="button-stick"></div>
+            <div class="button">RATE</div>
+        </div>
+
+        <style>
+            .ad-bnr {
+                width: 100%;
+                max-width: 600px;
+                transition: all .4s ease;
+            }
+        </style>
+
+    </div>
+
+    <div class="btm">
+        <img src="res/ad/anime640x100.png" class="ad-bnr">
+    </div>
+    </div>
+
+    <style>
+        .latest-con {
+            width: 100%;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            display: none;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.671);
+            z-index: 10;
+        }
+
+        .latest-bg {
+            width: 100%;
+            height: 32vh;
+            padding: 2vh 0;
+            background-image: radial-gradient(#23105f, #010d37);
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .latest-txt {
+            width: 100%;
+            text-align: center;
+            font-size: 6vw;
+        }
+    </style>
+    <div class="latest-con" id="latest-con">
+        <div class="latest-bg">
+            <div class="latest-txt">New Question Pack Available!!!</div>
+            <div class="button-bg ques">
+                <div class="button-stick"></div>
+                <div class="button">Go To Question Pack</div>
+            </div>
+            <div class="button-bg latest-exit" onclick="document.getElementById('latest-con').style.display='none'">
+                <div class="button-stick"></div>
+                <div class="button">Exit</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast"></div>
+    <script>
+        localStorage.setItem("gameplay", 0);
+
+        function allFunction() {
+
+            if (localStorage.Questions == null) {
+                //Add all question to content.html at line 443 & question.html at line 228 {inside (fullQuestion) var}
+                Questions = ["General", "India", "Kerala"]; //default unlocked questions
+                localStorage.Questions = JSON.stringify(Questions);
+
+                localStorage.General = 1;
+                localStorage.India = 1;
+                localStorage.Kerala = 1;
+
+                localStorage.World = 0;
+                localStorage.Nature = 0;
+                localStorage.Technology = 0;
+                localStorage.Science = 0;
+                localStorage.Sports = 0;
+
+                if (localStorage.coins != null)
+                    $(".latest-con").css({ display: 'flex' });
+
+            }
+            Questions = JSON.parse(localStorage.Questions);
+
+            if (localStorage.getItem("coins") == null) {
+                coins = 0; localStorage.setItem("coins", coins);
+                localStorage.setItem("lang", "ma");
+                total_answers = localStorage.setItem("total_answers", 0);
+                correct_answers = localStorage.setItem("correct_answers", 0);
+                wrong_answers = localStorage.setItem("wrong_answers", 0);
+                games_played = localStorage.setItem("games_played", 0);
+                games_won = localStorage.setItem("games_won", 0);
+
+            }
+            coins = parseInt(localStorage.coins);
+            oldCoins = localStorage.oldCoins;
+            if (isNaN(coins)) {
+                console.log('It is a NaN')
+                if (oldCoins != null) {
+                    coins = oldCoins;
+                } else {
+                    coins = 0;
+                }
+                localStorage.coins = coins;
+            } else {
+                localStorage.oldCoins = coins;
+            }
+
+            if (coins >= 1000 && coins < 1000000) {
+                $("#coins").html((coins / 1000).toFixed(2) + "K");
+            } else if (coins >= 1000000) {
+                $("#coins").html((coins / 1000000).toFixed(3) + "M");
+            } else {
+                $("#coins").html(coins);
+            }
+
+            if (localStorage.xp == null) {
+                xp = 0; localStorage.xp = xp;
+            }
+
+            $(".rate-level-txt").html(Math.trunc(localStorage.xp / 15));
+
+            function Outro() {
+                setTimeout(() => { $(".button").css({ transform: 'translateX(150%)' }); }, 100);
+                setTimeout(() => { $(".guess-bg").css({ transform: 'translateX(100%)', opacity: '0' }); }, 100);
+                setTimeout(() => { $(".button-stick").css({ transform: 'translateX(-100%)' }); }, 300);
+                setTimeout(() => { $(".logo-img, .coins, .rating-bg, .ad-bnr").css({ transform: 'scale(1.2)', opacity: '0' }); }, 300);
+            }
+
+            $(".play-online").click(function () {
+                localStorage.setItem("intro", 0);
+                document.getElementById("play-audio").play();
+                if (localStorage.games_played > 0) {
+                    setTimeout(() => { Outro(); }, 300);
+                    setTimeout(() => {
+                        //localStorage.setItem("gameplay", 1);
+                        location.href = "online/online_title.html";
+                    }, 2800);
+                } else {
+                    Toast("Play normal mode atleast once to unlock online mode");
+                }
+            });
+
+            $(".play").click(function () {
+                localStorage.setItem("intro", 0);
+                document.getElementById("play-audio").play();
+                setTimeout(() => { Outro(); }, 300);
+                setTimeout(() => {
+                    localStorage.setItem("gameplay", 1);
+                    location.href = "content.html";
+                }, 2800);
+            });
+
+            $(".ques").click(function () {
+                localStorage.setItem("intro", 0);
+                setTimeout(() => {
+                    document.getElementById("click-audio").play();
+                }, 200);
+                Outro();
+                setTimeout(() => {
+                    location.href = "questions.html";
+                }, 600);
+            });
+
+            $(".stats").click(function () {
+                localStorage.setItem("intro", 0);
+                setTimeout(() => {
+                    document.getElementById("click-audio").play();
+                }, 200);
+                Outro();
+                setTimeout(() => {
+                    location.href = "stats.html";
+                }, 600);
+            });
+
+            $(".achiev").click(function () {
+                localStorage.setItem("intro", 0);
+                setTimeout(() => {
+                    document.getElementById("click-audio").play();
+                }, 200);
+                Outro();
+                setTimeout(() => {
+                    location.href = "achievement.html";
+                }, 600);
+            });
+
+            $(".rate").click(function () {
+                localStorage.setItem("intro", 0);
+                setTimeout(() => {
+                    document.getElementById("click-audio").play();
+                }, 200);
+                setTimeout(() => {
+                    parent.location = "https://play.google.com/store/apps/details?id=com.quec.kodeeshwaran";
+                }, 600);
+            });
+
+            $(".ad-bnr").click(function () {
+                localStorage.setItem("intro", 0);
+                setTimeout(() => {
+                    document.getElementById("click-audio").play();
+                }, 200);
+                setTimeout(() => {
+                    parent.location = 'https://play.google.com/store/apps/details?id=com.quec.guess.anime';
+                }, 600);
+            });
+
+            function Toast(toastStr) {
+                $(".toast").html(toastStr);
+                $(".toast").fadeIn(0);
+                setTimeout(() => { $(".toast").fadeOut(); }, 3000);
+            }
+
+            $(".coins").click(function () {
+                localStorage.setItem("intro", 0);
+                setTimeout(() => {
+                    document.getElementById("click-audio").play();
+                }, 200);
+                Outro();
+                setTimeout(() => {
+                    location.href = "get_coins.html";
+                }, 600);
+            });
+
+        }
+
+        games_played = localStorage.games_played;
+        games_won = localStorage.games_won;
+        correct_answers = localStorage.correct_answers;
+        online_games_won = localStorage.online_games_won;
+
+        if (localStorage.basicAchiev == null) {
+            basicAchiev = { // t-p = games-played, t-w = total win
+                0: [0, 0, 500, 10, 'g-p'], //0 index = climable or not, 1 = claimed or not, 2 = reward price, 3 = Threshold
+                1: [0, 0, 500, 50, 'g-p'],
+                2: [0, 0, 500, 100, 'g-p'],
+                3: [0, 0, 500, 500, 'g-p'],
+                4: [0, 0, 1000, 1000, 'g-p'],
+                5: [0, 0, 1500, 1500, 'g-p'],
+                6: [0, 0, 2000, 2000, 'g-p'],
+                7: [0, 0, 3000, 3000, 'g-p'],
+                8: [0, 0, 10000, 5000, 'g-p'],
+            }
+
+            offlineAchiev = { //g-w = games_won, c-a = correct-answers
+                0: [0, 0, 1000, 10, 'g-w'],
+                1: [0, 0, 2000, 20, 'g-w'],
+                2: [0, 0, 5000, 40, 'g-w'],
+                3: [0, 0, 7000, 60, 'g-w'],
+                4: [0, 0, 100000, 100, 'g-w'],
+                5: [0, 0, 150000, 150, 'g-w'],
+                6: [0, 0, 250000, 200, 'g-w'],
+                7: [0, 0, 300000, 250, 'g-w'],
+                8: [0, 0, 1000000, 500, 'g-w'],
+                9: [0, 0, 10000000, 1000, 'g-w'],
+
+                10: [0, 0, 500, 100, 'c-a'],
+                11: [0, 0, 1000, 200, 'c-a'],
+                12: [0, 0, 2000, 300, 'c-a'],
+                13: [0, 0, 3000, 400, 'c-a'],
+                14: [0, 0, 4000, 500, 'c-a'],
+                15: [0, 0, 6000, 1000, 'c-a'],
+                16: [0, 0, 15000, 2000, 'c-a'],
+                17: [0, 0, 50000, 5000, 'c-a'],
+            }
+
+            onlineAchiev = {//lev = level, on-g-w = online_games_won
+                0: [0, 0, 500, 1, 'lev'],
+                1: [0, 0, 1000, 5, 'lev'],
+                2: [0, 0, 2000, 10, 'lev'],
+                3: [0, 0, 10000, 20, 'lev'],
+                4: [0, 0, 100000, 50, 'lev'],
+                5: [0, 0, 500000, 100, 'lev'],
+                6: [0, 0, 1000000, 200, 'lev'],
+                7: [0, 0, 5000000, 400, 'lev'],
+
+                8: [0, 0, 500, 10, 'on-g-w'],
+                9: [0, 0, 500, 20, 'on-g-w'],
+                10: [0, 0, 500, 40, 'on-g-w'],
+                11: [0, 0, 500, 60, 'on-g-w'],
+                12: [0, 0, 1000, 100, 'on-g-w'],
+                13: [0, 0, 1500, 150, 'on-g-w'],
+                14: [0, 0, 2000, 200, 'on-g-w'],
+                15: [0, 0, 2500, 250, 'on-g-w'],
+                16: [0, 0, 5000, 500, 'on-g-w'],
+                17: [0, 0, 7500, 750, 'on-g-w'],
+                18: [0, 0, 50000, 1000, 'on-g-w'],
+            }
+
+            localStorage.setItem('basicAchiev', JSON.stringify(basicAchiev));
+            localStorage.setItem('offlineAchiev', JSON.stringify(offlineAchiev));
+            localStorage.setItem('onlineAchiev', JSON.stringify(onlineAchiev));
+        }
+
+        basicAchiev = JSON.parse(localStorage.basicAchiev);
+        offlineAchiev = JSON.parse(localStorage.offlineAchiev);
+        onlineAchiev = JSON.parse(localStorage.onlineAchiev);
+        function CheckAchiev() {
+            claimable = 0;
+            for (i in basicAchiev) {
+                if (basicAchiev[i][4] == 'g-p') {
+                    //total-played
+                    if (basicAchiev[i][0] == 0) {
+                        //check whether this is claimable or not
+                        if (games_played >= basicAchiev[i][3]) {
+                            basicAchiev[i][0] = 1;
+                            claimable++;
+                        }
+                    } else if (basicAchiev[i][0] == 1) {
+                        //climable
+                        if (basicAchiev[i][1] == 0) {
+                            //claimable and not claimed
+                            claimable++;
+                        }
+                    }
+                }
+            }
+
+            for (i in offlineAchiev) {
+                //total-played
+                if (offlineAchiev[i][0] == 0) {
+                    //check whether this is claimable or not
+                    if (offlineAchiev[i][4] == 'g-w') {
+                        compare_ = games_won
+                    } else {
+                        compare_ = correct_answers
+                    }
+                    console.log('compare_', compare_);
+                    if (compare_ >= offlineAchiev[i][3]) {
+                        offlineAchiev[i][0] = 1;
+                        claimable++;
+                    }
+                } else if (offlineAchiev[i][0] == 1) {
+                    //climable
+                    if (offlineAchiev[i][1] == 0) {
+                        //claimable and not claimed
+                        claimable++;
+                    }
+                }
+            }
+            xp = parseInt(localStorage.xp);
+            Level = Math.trunc(xp / 15);
+
+            for (i in onlineAchiev) {
+                //total-played
+                if (onlineAchiev[i][0] == 0) {
+                    //check whether this is claimable or not
+                    if (onlineAchiev[i][4] == 'lev') {
+                        compare_ = Level
+                    } else {
+                        compare_ = online_games_won;
+                    }
+                    console.log('compare_', compare_);
+                    if (compare_ >= onlineAchiev[i][3]) {
+                        onlineAchiev[i][0] = 1;
+                        claimable++;
+                    }
+                } else if (onlineAchiev[i][0] == 1) {
+                    //claimable
+                    if (onlineAchiev[i][1] == 0) {
+                        //claimable and not claimed
+                        claimable++;
+                    }
+                }
+            }
+
+            if (claimable > 0) {
+                localStorage.setItem('basicAchiev', JSON.stringify(basicAchiev));
+                localStorage.setItem('offlineAchiev', JSON.stringify(offlineAchiev));
+                localStorage.setItem('onlineAchiev', JSON.stringify(onlineAchiev));
+                $('.achiev-count').css({ display: 'flex' });
+                $('.achiev-count').text(claimable);
+            }
+            console.log('claimable is', claimable);
+        }
+        CheckAchiev();
+
+
+        $(window).load(function () {
+            allFunction();
+        });
+    </script>
+</body>
+
+</html>

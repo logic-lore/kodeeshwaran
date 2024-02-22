@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Questions</title>
+    <script src="res/jquery.min.js"></script>
+    <style>
+        @font-face {
+            font-family: Rubik;
+            src: url(res/font/Rubik-Medium.ttf);
+        }
+
+        html,
+        body {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        body {
+            width: 100vw;
+            height: 100vh;
+            margin: 0;
+            background-image: radial-gradient(#23105f, #010d37);
+            font-family: Rubik;
+            color: #d5d7d5;
+            user-select: none;
+            /* supported by Chrome and Opera */
+            -webkit-user-select: none;
+            /* Safari */
+            -khtml-user-select: none;
+            /* Konqueror HTML */
+            -moz-user-select: none;
+            /* Firefox */
+            -ms-user-select: none;
+            /* Internet Explorer/Edge */
+        }
+
+        .full {
+            width: 100vw;
+            height: 100vh;
+            animation: full 400ms ease 1;
+        }
+
+        @keyframes full {
+            0% {
+                transform: scale(1.2);
+                opacity: 0;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .top {
+            width: 100vw;
+            height: 10vh;
+            display: flex;
+            justify-content: right;
+            align-items: center;
+        }
+
+        .coins {
+            margin-right: 5vw;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .coins-img {
+            width: 8vw;
+            height: 8vw;
+        }
+
+        #coins {
+            margin-left: 2vw;
+            font-size: 5.5vw;
+        }
+
+        .title {
+            padding-left: 3vw;
+            font-size: 9vw;
+            height: 8vh;
+        }
+
+        .ct-bg {
+            width: 100%;
+            height: 82vh;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            overflow-y: scroll;
+        }
+
+        .ct {
+            width: 40vw;
+            height: 22vw;
+            border-radius: 10px;
+            border: solid 1vw #d5d7d5;
+            margin: 1.5vh 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .ct:active {
+            transition: none;
+            opacity: .7;
+        }
+
+        .tick-bg {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-content: space-between;
+        }
+
+        .ct-img {
+            width: 10vw;
+            height: 10vw;
+            display: none;
+        }
+
+        .ct-img-lock {
+            width: 7vw;
+            height: 7vw;
+        }
+
+        .ct-txt {
+            width: 100%;
+            text-align: center;
+            font-size: 5vw;
+        }
+
+        .amt {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-top: 1vh;
+        }
+
+        .amt-img {
+            width: 5vw;
+            height: 5vw;
+            margin-right: 1vw;
+        }
+
+        .toast {
+            width: 90vw;
+            position: fixed;
+            top: 70vh;
+            left: 5vw;
+            padding: 1vh 0;
+            background-color: white;
+            border-radius: 10px;
+            color: black;
+            text-align: center;
+            font-size: 4vw;
+            transition: all 400ms ease;
+            display: none;
+            animation: toast 400ms ease 1;
+        }
+
+        @keyframes toast {
+            0% {
+                transform: scale(1.2);
+                opacity: 0;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <audio src="res/audio/click.mp3" id="click-audio"></audio>
+    <div class="full">
+        <div class="top">
+            <div class="coins">
+                <img src="res/img/coins.png" class="coins-img">
+                <div id="coins">28</div>
+            </div>
+        </div>
+        <div class="title">Questions</div>
+        <!--a-->
+        <div class="ct-bg">
+            <div class="ct" id="General">
+                <div class="tick-bg">
+                    <img src="res/img/tick.png" class="ct-img General-img">
+                </div>
+                <div class="ct-txt">General</div>
+            </div>
+            <!--b-->
+            <div class="ct" id="India">
+                <div class="tick-bg">
+                    <img src="res/img/tick.png" class="ct-img India-img">
+                </div>
+                <div class="ct-txt">India</div>
+            </div>
+            <!--c-->
+            <div class="ct" id="Kerala">
+                <div class="tick-bg">
+                    <img src="res/img/tick.png" class="ct-img Kerala-img">
+                </div>
+                <div class="ct-txt">Kerala</div>
+            </div>
+            <!--f-->
+            <div class="ct" id="Nature">
+                <div class="tick-bg">
+                    <img src="res/img/lock.png" class="ct-img-lock Nature-lock">
+                    <div class="amt Nature-con"><img src="res/img/coins.png" class="amt-img"> 200M</div>
+                    <img src="res/img/tick.png" class="ct-img Nature-img">
+                </div>
+                <div class="ct-txt">Nature & Animal</div>
+            </div>
+            <!--g-->
+            <div class="ct" id="Science">
+                <div class="tick-bg">
+                    <img src="res/img/lock.png" class="ct-img-lock Science-lock">
+                    <div class="amt Science-con"><img src="res/img/coins.png" class="amt-img"> 200M</div>
+                    <img src="res/img/tick.png" class="ct-img Science-img">
+                </div>
+                <div class="ct-txt">Science</div>
+            </div>
+            <!--h-->
+            <div class="ct" id="Sports">
+                <div class="tick-bg">
+                    <img src="res/img/lock.png" class="ct-img-lock Sports-lock">
+                    <div class="amt Sports-con"><img src="res/img/coins.png" class="amt-img"> 200M</div>
+                    <img src="res/img/tick.png" class="ct-img Sports-img">
+                </div>
+                <div class="ct-txt">Sports</div>
+            </div>
+            <!--i-->
+            <div class="ct" id="Technology">
+                <div class="tick-bg">
+                    <img src="res/img/lock.png" class="ct-img-lock Technology-lock">
+                    <div class="amt Technology-con"><img src="res/img/coins.png" class="amt-img"> 200M</div>
+                    <img src="res/img/tick.png" class="ct-img Technology-img">
+                </div>
+                <div class="ct-txt">Technology</div>
+            </div>
+            <!--d-->
+            <div class="ct" id="World">
+                <div class="tick-bg">
+                    <img src="res/img/lock.png" class="ct-img-lock World-lock">
+                    <div class="amt World-con"><img src="res/img/coins.png" class="amt-img"> 200M</div>
+                    <img src="res/img/tick.png" class="ct-img World-img">
+                </div>
+                <div class="ct-txt">World</div>
+            </div>
+
+        </div>
+    </div>
+    <div class="toast"></div>
+    <script>
+        coins = parseInt(localStorage.getItem("coins"));
+        function ShowCoin() {
+            if (coins >= 1000 && coins < 1000000) {
+                $("#coins").html((coins / 1000).toFixed(2) + "K");
+            } else if (coins >= 1000000) {
+                $("#coins").html((coins / 1000000).toFixed(3) + "M");
+            } else {
+                $("#coins").html(coins);
+            }
+        }
+        ShowCoin();
+
+        function Toast(toastStr) {
+            $(".toast").html(toastStr);
+            $(".toast").fadeIn(0);
+            setTimeout(() => { $(".toast").fadeOut(); }, 2000);
+        }
+
+        Questions = JSON.parse(localStorage.Questions);
+        quesCount = Questions.length;
+
+        for (i = 0; i < Questions.length; i++) {
+            $("." + Questions[i] + "-img").fadeIn(0);
+        }
+
+        fullQuestions = ["General", "World", "India", "Kerala", "Science", "Sports", "Nature", "Technology"];
+        for (x = 0; x < fullQuestions.length; x++) {
+            console.log(localStorage.getItem(fullQuestions[x]));
+            if (localStorage.getItem(fullQuestions[x]) == 1) {
+                $("." + fullQuestions[x] + "-lock").fadeOut(0);
+                $("." + fullQuestions[x] + "-con").fadeOut(0);
+            }
+        }
+
+
+        $(".ct").click(function () {
+            document.getElementById("click-audio").play();
+
+            tmpVar = $(this).attr('id');
+            console.log("Id issssssssssss " + tmpVar);
+            if (localStorage.getItem(tmpVar) == 1) { // 1 means bought for coins
+                CheckSelect(tmpVar);
+            } else {
+                if (coins >= 200000000) {
+                    coins -= 200000000; localStorage.setItem("coins", coins);
+                    ShowCoin();
+                    localStorage.setItem(tmpVar, 1);
+                    AddString(tmpVar);
+                } else { Toast("No enough coins to buy"); }
+            }
+        });
+
+        function CheckSelect(str) {
+            console.log(str);
+            console.log(Questions.length);
+            tmpBool = false;
+            for (i = 0; i < Questions.length; i++) {
+                console.log(i);
+                if (Questions[i] == str) {
+                    //string already present in array
+                    console.log("string already present in array");
+                    tmpBool = true;
+                    if (quesCount > 2) {
+                        Questions.splice(Questions.indexOf(str), 1);
+                        localStorage.Questions = JSON.stringify(Questions);
+                        $(".ct-img").css({ visibility: 'visible' });
+                        $("." + str + "-img").fadeOut(0); $("." + str + "-img").css({ visibility: 'visible' });
+                        quesCount = Questions.length;
+                    } else {
+                        Toast("Minimum 2 have to select");
+                    }
+
+                }
+                if (i == (Questions.length - 1) && !tmpBool) {
+                    //Add string to array
+                    console.log("Add string to array");
+                    AddString(str);
+                    return;
+                }
+            }
+        }
+
+        function AddString(str) {
+            str = str;
+            Questions.push(str);
+            console.log(Questions);
+            localStorage.Questions = JSON.stringify(Questions);
+            $("." + str + "-lock").fadeOut(0);
+            $("." + str + "-con").fadeOut(0); $("." + str + "-img").fadeIn(0); $("." + str + "-img").css({ visibility: 'visible' });
+            quesCount = Questions.length;
+        }
+    </script>
+</body>
+
+</html>
